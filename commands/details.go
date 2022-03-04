@@ -89,11 +89,24 @@ var DetailsCommand = &cli.Command{
 			fmt.Println(err)
 			return err
 		}
+		output := c.String("output")
 
-		table := DetailsToASCIITable(userDetails)
-		table.Render()
+		switch output {
+
+		case "json":
+			json, err := DetailsToJSON(userDetails)
+			if err != nil {
+				fmt.Println(err)
+				return err
+			}
+			fmt.Println(string(json))
+		default:
+			table := DetailsToASCIITable(userDetails)
+			table.Render()
+
+		}
 
 		return nil
+
 	},
 }
-

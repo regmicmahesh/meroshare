@@ -21,7 +21,6 @@ func InitializeCredentials(username, password string, clientID int) error {
 
 var InitCommand = &cli.Command{
 	Name:    "init",
-	Aliases: []string{"i"},
 	Usage:   "Initialize credentials for Meroshare.",
 	Flags: []cli.Flag{
 		&cli.StringFlag{

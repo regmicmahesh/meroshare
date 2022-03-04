@@ -3,6 +3,7 @@ package commands
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 	"strconv"
@@ -122,8 +123,17 @@ var PortfolioCommand = &cli.Command{
 		if err != nil {
 			return err
 		}
-		table := PortfolioToASCIITable(portfolioData)
-		table.Render()
+
+		output := c.String("output")
+
+		switch output {
+		case "json":
+			fmt.Println(PortfolioToJSON(portfolioData))
+		default:
+			PortfolioToASCIITable(portfolioData).Render()
+		}
+
 		return nil
+
 	},
 }

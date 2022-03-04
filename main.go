@@ -9,9 +9,16 @@ import (
 
 func main() {
 	app := &cli.App{
-		Name:        "meroshare-cli",
-		Usage:       "meroshare-cli is a command line interface for Meroshare.",
-		HelpName:    "meroshare-cli",
+		Name:     "meroshare-cli",
+		Usage:    "meroshare-cli is a command line interface for Meroshare.",
+		HelpName: "meroshare-cli",
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:  "output",
+				Usage: "output in json or ascii table",
+				Value: "ascii",
+			},
+		},
 		Description: "Meroshare CLI - Reject Angular and Bloated Web and embrace the power of CLI.",
 		Commands: []*cli.Command{
 			commands.DetailsCommand,
