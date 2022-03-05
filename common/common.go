@@ -29,6 +29,10 @@ var MSHAREKEY string
 func GetKey() {
 	if os.Getenv("MSHAREKEY") != "" {
 		MSHAREKEY = os.Getenv("MSHAREKEY")
+		if len(MSHAREKEY) != 25 {
+			log.Fatal("Must be of 25 length")
+			os.Exit(1)
+		}
 	} else {
 		MSHAREKEY = "abc&1*~#^2^#s0^=)^^7%b34"
 	}
