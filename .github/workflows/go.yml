@@ -2,8 +2,6 @@ name: Build MeroShare CLI CI/CD
 
 on:
  push:
-    branches:
-      - master
     tags:
       - 'v*'
 
