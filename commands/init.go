@@ -1,6 +1,8 @@
 package commands
 
 import (
+	"log"
+
 	"github.com/regmicmahesh/merosharemorelikeidontcare/common"
 	"github.com/urfave/cli/v2"
 )
@@ -8,11 +10,13 @@ import (
 func InitializeCredentials(username, password string, clientID int) error {
 	_, err := common.Login(username, password, clientID)
 	if err != nil {
+		log.Fatal(err)
 		return err
 	}
 
 	_, err = common.Hydrate(username, password, clientID)
 	if err != nil {
+		log.Fatal(err)
 		return err
 	}
 	return nil

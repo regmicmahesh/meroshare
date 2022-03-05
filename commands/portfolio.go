@@ -59,12 +59,12 @@ func preparePortfolioPayload(ud *UserDetails) (*bytes.Buffer, error) {
 func GetPortfolio() (*PortfolioData, error) {
 	client := &http.Client{}
 
-	details, err := GetUserDetails()
+	ud, err := GetUserDetails()
 	if err != nil {
 		return nil, err
 	}
 
-	jsonBuffer, err := preparePortfolioPayload(details)
+	jsonBuffer, err := preparePortfolioPayload(ud)
 
 	if err != nil {
 		return nil, err
@@ -118,6 +118,7 @@ func PortfolioToJSON(pd *PortfolioData) string {
 var PortfolioCommand = &cli.Command{
 	Name:  "portfolio",
 	Usage: "Get Portfolio",
+	Aliases: []string{"p"},
 	Action: func(c *cli.Context) error {
 		portfolioData, err := GetPortfolio()
 		if err != nil {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"path"
@@ -17,12 +18,30 @@ const BASE_URL = "https://webbackend.cdsc.com.np/api/"
 const GET_CAPITALS_URL = BASE_URL + "meroShare/capital/"
 const LOGIN_URL = BASE_URL + "meroShare/auth/"
 const OWN_DETAILS_URL = BASE_URL + "meroShare/ownDetail/"
+const CAPITALS_URL = BASE_URL + "meroShare/capital/"
 const PORTFOLIO_URL = BASE_URL + "meroShareView/myPortfolio/"
+const APPLICATION_REPORT_URL = BASE_URL + "meroShare/applicantForm/active/search/"
+const OLD_APPLICATION_REPORT_URL = BASE_URL + "meroShare/migrated/applicantForm/search/"
+const APPLICATION_REPORT_DETAILS_URL = BASE_URL + "meroShare/applicantForm/report/detail/"
+
+var MSHAREKEY string
+
+func GetKey() {
+	if os.Getenv("MSHAREKEY") != "" {
+		MSHAREKEY = os.Getenv("MSHAREKEY")
+	} else {
+		MSHAREKEY = "abc&1*~#^2^#s0^=)^^7%b34"
+	}
+}
 
 type Credentials struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 	ClientId int    `json:"clientId"`
+}
+
+func init() {
+	GetKey()
 }
 
 func Login(username, password string, clientID int) (string, error) {
@@ -50,9 +69,14 @@ func Rehydrate() (*Credentials, error) {
 		return nil, errors.New("Failed to open credentials file")
 	}
 	defer file.Close()
+
 	err = json.NewDecoder(file).Decode(creds)
+	creds.Password, err = Decrypt(creds.Password, MSHAREKEY)
 	if err != nil {
-		return nil, errors.New("Failed to decode credentials")
+		return nil, errors.New("Failed to encrypt credentials")
+	}
+	if err != nil {
+		return nil, errors.New("Failed to write credentials")
 	}
 	return creds, nil
 
@@ -69,11 +93,17 @@ func Hydrate(username, password string, clientID int) (*Credentials, error) {
 	if err != nil {
 		return nil, errors.New("Failed to create credentials file")
 	}
+	creds.Password, err = Encrypt(creds.Password, MSHAREKEY)
+	if err != nil {
+		log.Fatal(err)
+		return nil, errors.New("Failed to encrypt credentials")
+	}
 	defer file.Close()
 	err = json.NewEncoder(file).Encode(creds)
 	if err != nil {
-		return nil, errors.New("Failed to encode credentials")
+		return nil, errors.New("Failed to write credentials")
 	}
+
 	return creds, nil
 }
 
@@ -99,6 +129,18 @@ func PrepareAuthenticatedRequest(method, url string, body io.Reader) (*http.Requ
 		return nil, err
 	}
 	req.Header.Add("Authorization", AUTH_TOKEN)
+	req.Header.Add("Content-Type", "application/json")
+
+	return req, nil
+
+}
+
+func PrepareUnauthenticatedRequest(method, url string, body io.Reader) (*http.Request, error) {
+
+	req, err := http.NewRequest(method, url, body)
+	if err != nil {
+		return nil, err
+	}
 	req.Header.Add("Content-Type", "application/json")
 
 	return req, nil

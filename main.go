@@ -24,6 +24,9 @@ func main() {
 			commands.DetailsCommand,
 			commands.PortfolioCommand,
 			commands.InitCommand,
+			commands.CapitalsCommand,
+			commands.ApplicationReportCommand,
+			commands.ApplicationReportDetailsCommand,
 		},
 	}
 	app.Run(os.Args)
