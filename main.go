@@ -19,6 +19,7 @@ func main() {
 		Name:     "meroshare-cli",
 		Usage:    "meroshare-cli is a command line interface for Meroshare.",
 		HelpName: "meroshare-cli",
+		Version: "0.0.1",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:  "output",
