@@ -160,12 +160,10 @@ func ApplicationReportsToASCIITable(appreports *ApplicationReportResponse) *tabl
 		return table
 	}
 
-	table.SetHeader([]string{"Company Share ID", "Sub Group", "Scrip", "Company Name", "Share Type Name", "Share Group Name", "Status Name", "Applicant Form ID", "AllotmentStatus"})
+	table.SetHeader([]string{"Scrip", "Company Name", "Share Type Name", "Share Group Name", "Status Name", "Applicant Form ID", "AllotmentStatus"})
 
 	for _, object := range appreports.Object {
 		table.Append([]string{
-			fmt.Sprintf("%d", object.CompanyShareID),
-			object.SubGroup,
 			object.Scrip,
 			object.CompanyName,
 			object.ShareTypeName,
