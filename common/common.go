@@ -34,7 +34,7 @@ func GetKey() {
 			os.Exit(1)
 		}
 	} else {
-		MSHAREKEY = "abc&1*~#^2^#s0^=)^^7%b34"
+		MSHAREKEY = "abc&1*~#3^^#s00=(^^7%b35"
 	}
 }
 
