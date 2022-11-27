@@ -7,8 +7,9 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+
 const DESCRIPTION = `
-Meroshare CLI - Reject Angular and Bloated Web and embrace the power of CLI.
+Meroshare CLI - Rejecting Angular and Bloated Web and embrace the power of CLI.
 
 Environment Variables:
 MSHAREKEY 	 used to sign your password before saving in your system.
